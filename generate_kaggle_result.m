@@ -17,7 +17,8 @@ function generate_kaggle_result()
     
     load(MODELFILE);
     
-    predict_probs = mypredict(samples, model);
+    samples = samples(:, useful_dims(1:1000));    
+    predict_probs = mynnpredict(samples, model);
     
     for i=1:size(predict_probs,1)
         fprintf(fd,'%s,%f\n', ids{i}, predict_probs(i));       
