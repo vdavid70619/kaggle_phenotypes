@@ -1,7 +1,7 @@
 function generate_kaggle_result()
     
     MODELFILE = 'model.mat'
-    SAVEFILE = 'kaggle.txt'
+    SAVEFILE = 'kaggle.csv'
  
     if ~exist('test_cache.mat')
         data = dataloader('-df', 'data/test_genotypes.csv', '-cf', 'test_cache.mat');
@@ -17,9 +17,10 @@ function generate_kaggle_result()
     
     load(MODELFILE);
     
-    samples = samples(:, useful_dims(1:1000));    
-    predict_probs = mynnpredict(samples, model);
-    
+    %samples = samples(:, useful_dims(1:1000));    
+    %predict_probs = mynnpredict(samples, model);
+    predict_probs = mypredict(samples, model);
+
     for i=1:size(predict_probs,1)
         fprintf(fd,'%s,%f\n', ids{i}, predict_probs(i));       
     end  
