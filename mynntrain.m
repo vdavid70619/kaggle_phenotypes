@@ -5,7 +5,7 @@ function model = mynntrain(trains, labels)
     [train_x, mu, sigma] = zscore(trains);   
     train_y = [1-labels labels];
     %train_y = labels;
-    nn = nnsetup([59 2]);
+    nn = nnsetup([897 2]);
     
     nn.nonSparsePenalty      = 10;
     nn.weightPenaltyL2      = 1e-2;         %  L2 weight decay

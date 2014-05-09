@@ -2,19 +2,25 @@
 %% <TODO> K-mer features
 %%
 function best_model = nfold_validation()
-    N = 10
+    N = 8
     
-    load('data_cache.mat');
+    train_data = load('data_cache.mat');
+    test_data = load('test_cache.mat');
     
-    samples = cat(2, data.feature{:})';    
-    labels = data.label;
-    
+    train_samples = cat(2, train_data.data.feature{:})';    
+    train_labels = train_data.data.label;
+  
+    test_samples = cat(2, test_data.data.feature{:})'; 
 %     load('dim_reduct.mat');
 %     
 %     samples = samples(:, useful_dims);
 %     samples = samples(randperm(size(samples,1)),:);
    
-    samples = k_mer_features(samples, [4 8 16 32 64 128 256 512]);
+    samples = k_mer_features([train_samples; test_samples], [4 8 16 32 64 128]);
+    samples = samples(1:800,:);
+    labels = train_labels;
+    samples = samples(randperm(size(samples,1)),:);
+    
     useful_dims = [];
     for i=1:N
         fprintf('============= Fold %d =============\n', i);
