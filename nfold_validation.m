@@ -1,5 +1,5 @@
 %%
-%% <TODO> K-mer features
+%%
 %%
 function best_model = nfold_validation()
     N = 8
@@ -19,7 +19,11 @@ function best_model = nfold_validation()
     samples = k_mer_features([train_samples; test_samples], [4 8 16 32 64 128]);
     samples = samples(1:800,:);
     labels = train_labels;
-    samples = samples(randperm(size(samples,1)),:);
+    
+    rand_indx = randperm(size(samples,1));
+    samples = samples(rand_indx,:);
+    labels = labels(rand_indx,:);
+    
     
     useful_dims = [];
     for i=1:N
