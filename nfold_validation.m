@@ -4,28 +4,40 @@
 function best_model = nfold_validation()
     N = 8
     
-    train_data = load('data_cache.mat');
-    test_data = load('test_cache.mat');
-    
-    train_samples = cat(2, train_data.data.feature{:})';    
-    train_labels = train_data.data.label;
-  
-    test_samples = cat(2, test_data.data.feature{:})'; 
-%     load('dim_reduct.mat');
+%     %% Load train data
+%     train_data = load('data_cache.mat');
+%     train.samples = cat(2, train_data.data.feature{:})';    
+%     train.labels = train_data.data.label;
+%     train.population = train_data.data.population;
 %     
-%     samples = samples(:, useful_dims);
-%     samples = samples(randperm(size(samples,1)),:);
+%     %% Load test data
+%     test_data = load('test_cache.mat');  
+%     test.samples = cat(2, test_data.data.feature{:})'; 
+%     test.populations = test_data.data.population;
+%     test.ids = test_data.data.id;
+%     
+%     %% Get k_mers
+%     k_mers = k_mer_features([train.samples; test.samples], [4 8 16 32 64 128]);
+%     test.k_mers = k_mers(801:1000,:);
+%     train.k_mers = k_mers(1:800,:);
+%     
+%     %% Do dim reduction on samples
+%     useful_dims = [];    
+%     load('dim_reduct.mat')
+%     train.samples = train.samples(:,useful_dims); 
+%     test.samples = test.samples(:,useful_dims); 
+%     
+
+    load('meta_cache.mat');
+    %% Shuffle
+    rand_indx = randperm(size(train.samples,1));
+    samples = train.samples(rand_indx,:);
+    k_mers = train.k_mers(rand_indx,:);
+    labels = train.labels(rand_indx,:);
+    populations = train.population(rand_indx);
+    
+    samples = [samples k_mers populations];
    
-    samples = k_mer_features([train_samples; test_samples], [4 8 16 32 64 128]);
-    samples = samples(1:800,:);
-    labels = train_labels;
-    
-    rand_indx = randperm(size(samples,1));
-    samples = samples(rand_indx,:);
-    labels = labels(rand_indx,:);
-    
-    
-    useful_dims = [];
     for i=1:N
         fprintf('============= Fold %d =============\n', i);
                 
@@ -66,6 +78,10 @@ function best_model = nfold_validation()
     fprintf('Median Logloss: %f, Model: %d\n', s_losses(s_id), m_ind);
     best_model = model{m_ind};
     model = best_model;
-    model.useful_dims = useful_dims;
     save('model.mat','model');
+    
+    
+    tests.samples = [test.samples test.k_mers test.populations];
+    tests.id = test.ids;
+    generate_kaggle_result(tests, model);
 end

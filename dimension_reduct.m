@@ -6,9 +6,12 @@ function dimension_reduct()
     train_samples = cat(2, train.data.feature{:})'; 
     test_samples = cat(2, test.data.feature{:})'; 
 
-    train_labels = train.data.label;
-    test_labels = ones(size(test_samples,1),1).*0.5;
+%     train_labels = train.data.population;
+%     test_labels = test.data.population;
     
+    train_labels = train.data.label;
+    test_labels = ones(size(test_samples,1),1);
+
     samples = [train_samples; test_samples];
     labels = [train_labels; test_labels];
     

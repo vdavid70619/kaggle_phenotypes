@@ -3,16 +3,18 @@ function model = mynntrain(trains, labels)
     addpath(genpath('../../LIB/DeepLearnToolbox'));    
     % normalize
     [train_x, mu, sigma] = zscore(trains);   
-    train_y = [1-labels labels];
-    %train_y = labels;
-    nn = nnsetup([897 2]);
+    %train_y = [1-labels labels];
+    train_y = labels;
+    n_dims = size(train_x,2);
+    
+    nn = nnsetup([n_dims 1]);
     
     nn.nonSparsePenalty      = 10;
     nn.weightPenaltyL2      = 1e-2;         %  L2 weight decay
     nn.dropoutFraction      = 0.5;          %  Dropout fraction
     nn.activation_function  = 'sigm';       %  Sigmoid activation function
     nn.learningRate         = 1;            %  Sigm require a lower learning rate    
-    nn.output               = 'softmax';    %  use softmax output
+    nn.output               = 'logloss';    %  use softmax output
     opts.numepochs          = 100;            %  Number of full sweeps through data
     opts.batchsize          = 10;           %  Take a mean gradient step over this many samples
     opts.plot               = 0;          	%  enable plotting    

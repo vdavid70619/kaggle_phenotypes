@@ -25,6 +25,7 @@ function data = dataloader(varargin)
     id = {};
     feature = {};
     feature_label = {};
+    population = {};
 
     if exist('DATAFILE')    
         fd = fopen(DATAFILE);
@@ -60,6 +61,14 @@ function data = dataloader(varargin)
                 end
             end
             id{i} = line{1};
+            if ~isempty(strfind(line{1}, 'jpt'))
+                population{i} = 1;
+            elseif ~isempty(strfind(line{1}, 'ceu'))
+                population{i} = 0;
+            else
+                population{i} = -1;
+            end
+                
             feature{i} = line2feature;
             fline = fgetl(fd);
             i = i+1;
@@ -92,6 +101,7 @@ function data = dataloader(varargin)
     data.label = cat(1, label{:});
     data.feature = feature;
     data.id = id;
+    data.population = cat(1, population{:});
     
     save(CACHEFILE, 'data')
 end
