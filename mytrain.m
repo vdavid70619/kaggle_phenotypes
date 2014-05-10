@@ -28,10 +28,10 @@ function [model] = mytrain(trains, labels)
     codes = sparse(double(codes));
     codes = mynormalize(codes);
 
-    %model.svm = train(labels, codes, '-s 7 -B 1 -c 1');
-    model.svm = svmtrain(labels, codes, ['-s 4 -b 1 -t 2 -m 8000']);
+    model.svm = train(labels, codes, '-s 6 -B 1 -c 1');
+    %model.svm = svmtrain(labels, codes, ['-s 4 -b 1 -t 0 -m 8000']);
         
-    %[predict_labels, accs, prob] = predict(labels, codes, model.svm, '-b 1');
+    %[predict_label, accs, prob] = predict(labels, codes, model.svm, '-b 1');
     [predict_label, accs, prob] = svmpredict(labels, codes, model.svm, '-b 1');
     if isempty(prob)
         loss = logloss(labels, predict_label);        

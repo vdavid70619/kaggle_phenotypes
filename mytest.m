@@ -19,7 +19,7 @@ function [accs, loss] = mytest(tests, labels, model)
     codes = sparse(double(codes));
     codes = mynormalize(codes);
     
-    %[predict_labels, accs, prob] = predict(labels, codes, model.svm, '-b 1');
+    %[predict_label, accs, prob] = predict(labels, codes, model.svm, '-b 1');
     [predict_label, accs, prob] = svmpredict(labels, codes, model.svm, '-b 1');
     %disp(prob)    
     if isempty(prob)

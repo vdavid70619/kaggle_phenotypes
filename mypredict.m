@@ -15,7 +15,7 @@ function predict_probs = mypredict(tests, model, dbc)
     codes = mynormalize(codes);
     
     labels = zeros(size(codes,1),1);
-    %[predict_labels, accs, prob] = predict(labels, codes, model, '-b 1');
+    %[predict_label, accs, prob] = predict(labels, codes, model, '-b 1');
     [predict_label, accs, prob] = svmpredict(labels, codes, model.svm, '-b 1');
     %prob = normalize(prob);  
     if isempty(prob)
