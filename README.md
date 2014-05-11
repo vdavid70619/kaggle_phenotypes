@@ -1,5 +1,7 @@
 kaggle_phenotypes
 =================
+# Xiyang Dai
+# UMD CS
 
 Predict phenotypes from genotype.
 --------------------------------------
