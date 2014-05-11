@@ -1,11 +1,13 @@
 kaggle_phenotypes
 =================
 
+ Xiyang Dai
+ UMD CS
+
 Predict phenotypes from genotype.
 --------------------------------------
 
-# Xiyang Dai
-# UMD CS
+
 
 This is for Kaggle competition for predicting phenotypes from genotype @UMD CMSC702. The whole codes are provided AS-IS. 
 
